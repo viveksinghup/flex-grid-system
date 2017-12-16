@@ -1,0 +1,22 @@
+$gray-10: #9cabac;
+
+/**
+ * Calculate basic define
+ */
+
+$flex-columns: 12 ;
+$flex-gutter: 0.5rem ;
+$flex-class-row: 'row' ;
+$flex-class-col: 'fx-col' ;
+$flex-class-off: 'off' ;
+
+/**
+ * Calculate column breakpoints
+ */
+
+$flex-breakpoints: (
+  (xs),
+  (sm, 768px),
+  (md, 1024px),
+  (lg, 1200px)
+);

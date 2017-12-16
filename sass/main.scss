@@ -1,0 +1,155 @@
+@import "_variables.scss";
+
+*,
+*::before,
+*::after {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+} 
+.block{
+  background-color: $gray-10;
+  min-height: 50px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container, .container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.heading{
+    display: flex;
+    border-bottom: 1px dotted $gray-10;
+    min-height: 50px;
+    align-items: center;
+}
+/**
+ * Calculate column size percentage
+ */
+
+@function get-col-percent($column-num) {
+  @return $column-num / $flex-columns * 100%;
+}
+
+/**
+ * Spacing mixin to create uniform margin/padding
+ */
+
+@mixin spacing( $value, $type: margin, $orientation: vertical ) {
+  @if $orientation == vertical {
+    #{ $type }-top: $value;
+    #{ $type }-bottom: $value;
+  } @else {
+    #{ $type }-left: $value;
+    #{ $type }-right: $value;
+  }
+}
+
+/**
+ * Row wrapper class, flex box parent.
+ */
+.#{ $flex-class-row } {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  @include spacing( ( -$flex-gutter ), margin, horizontal );
+}
+
+/**
+ * Default column property.
+ */
+%#{ $flex-class-col } {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  min-height: 50px;
+  margin-top: 10px;
+  @include spacing( ( $flex-gutter ), padding, horizontal );
+}
+
+
+%#{ $flex-class-col }-flex {
+  @extend %#{ $flex-class-col };
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 100%;
+}
+
+
+/**
+ * Generate a set of grid column
+ */
+
+@mixin grid-base( $namespace ) {
+  .#{ $flex-class-col }-#{$namespace} {
+    @extend %#{ $flex-class-col }-flex;
+  }
+
+  @for $i from 1 through $flex-columns {
+    .#{ $flex-class-col }-#{$namespace}-#{$i} {
+      @extend %#{ $flex-class-col };
+    }
+  }
+}
+
+@mixin grid-sizes( $namespace ) {
+
+  @for $i from 1 through $flex-columns {
+    .#{ $flex-class-col }-#{$namespace}-#{$i} {
+      flex-basis: get-col-percent($i);
+      max-width:  get-col-percent($i);
+    }
+  }
+
+  @for $i from 1 through $flex-columns {
+
+    @if ( $i != $flex-columns ) {
+      .#{ $flex-class-off }-#{$namespace}-#{$i} {
+        margin-left: get-col-percent($i);
+      }
+    }
+
+  }
+
+  .#{ $flex-class-off }-#{$namespace}-reset {
+    margin-left: 0;
+  }
+
+}
+/**
+ * Break point Grid //
+ */
+@each $val in $flex-breakpoints {
+
+  $namespace: nth($val, 1);
+  @include grid-base( $namespace );
+
+}
+
+@each $val in $flex-breakpoints {
+  @if length($val) == 1 {
+
+    $namespace: nth($val, 1);
+    @include grid-sizes( $namespace );
+
+  } @else {
+
+    $namespace: nth($val, 1);
+    $size: nth($val, 2);
+
+    @media only screen and (min-width: #{$size}) {
+      @include grid-sizes( $namespace );
+    }
+  }
+}
