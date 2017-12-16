@@ -5,6 +5,7 @@
 *::after {
     margin: 0px;
     padding: 0px;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 } 
 .block{
@@ -12,8 +13,14 @@
   min-height: 50px;
   width: 100%;
   padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 .container, .container-fluid {
@@ -25,9 +32,13 @@
   margin: 0 auto;
 }
 .heading{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     border-bottom: 1px dotted $gray-10;
     min-height: 50px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 /**
@@ -56,9 +67,14 @@
  * Row wrapper class, flex box parent.
  */
 .#{ $flex-class-row } {
-  box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   @include spacing( ( -$flex-gutter ), margin, horizontal );
 }
@@ -68,10 +84,18 @@
  */
 %#{ $flex-class-col } {
   box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-flex: 0;
+  -ms-flex-positive: 0;
   flex-grow: 0;
+  -ms-flex-negative: 0;
   flex-shrink: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   min-height: 50px;
   margin-top: 10px;
@@ -81,8 +105,12 @@
 
 %#{ $flex-class-col }-flex {
   @extend %#{ $flex-class-col };
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
   flex-grow: 1;
+  -ms-flex-preferred-size: 0;
   flex-basis: 0;
+  -ms-flex-preferred-size: 0;
   max-width: 100%;
 }
 
